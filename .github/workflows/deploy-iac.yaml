@@ -24,8 +24,8 @@ on:
 
 env:
   APPLICATION_NAME: 'nvue-app'
-  RESOURCE_GROUP_NAME: 'nvue'
-  RESOURCE_GROUP_LOCATION: 'eastus2'
+  RESOURCE_GROUP_NAME: 'nvue-rg'
+  RESOURCE_GROUP_LOCATION: 'eastus'
   NODE_VERSION: '18-lts'
   DOTNET_VERSION: '8.0'
 

@@ -1,0 +1,68 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "AppName": {
+            "type": "string",
+            "metadata": {
+                "description": "Application Base Name for {hosted-plan-name}-hpn"
+            }
+        },
+        "Environment": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Environment Name (Test, Beta, Prod(no value))"
+            }
+        },
+        "ResourceTags": {
+            "type": "object",
+            "defaultValue": {
+                "AppName": "[parameters('AppName')]",
+                "Version":  "1.1.0.0",
+                "OS": "Linux",
+                "Cost": "$0.00 - F1",
+                "Template": "[toLower(format('{0}-template', parameters('AppName')))]",
+                "Resource": "HostingPlan"
+            },
+            "metadata": {
+                "description": "Resource Tags to help tie resources together"
+            }
+        }
+    },
+    "variables": {
+        "hosting-plan-name": "[toLower(format('{0}-hpn-{1}', parameters('AppName'), parameters('Environment')))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/serverfarms",
+            "apiVersion": "2022-03-01",
+            "name": "[variables('hosting-plan-name')]",
+            "location": "[resourceGroup().location]",
+            "kind": "linux",
+            "sku": {
+                "name": "F1",
+                "tier": "Free",
+                "size": "F1",
+                "family": "F",
+                "capacity": 1
+            },
+            "properties": {
+                "workerSize": 0,
+                "workerSizeId": 0,
+                "numberOfWorkers": 1,
+                "perSiteScaling": false,
+                "elasticScaleEnabled": false,
+                "maximumElasticWorkerCount": 1,
+                "isSpot": false,
+                "reserved": true,
+                "isXenon": false,
+                "hyperV": false,
+                "targetWorkerCount": 0,
+                "targetWorkerSizeId": 0,
+                "zoneRedundant": false
+            },
+            "tags": "[parameters('ResourceTags')]"
+        }
+    ]
+}

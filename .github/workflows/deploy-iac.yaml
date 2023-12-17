@@ -1,0 +1,113 @@
+# This workflow will push an Azure Resource Manager templates to Azure when a commit is pushed to your default branch.
+#
+# This workflow assumes you have already created the target Azure App Service web app.
+# For instructions see https://docs.microsoft.com/en-us/azure/app-service/quickstart-nodejs?tabs=linux&pivots=development-environment-cli
+#
+# To configure this workflow:
+#
+# 1. Download the Publish Profile for your Azure Web App. You can download this file from the Overview page of your Web App in the Azure Portal.
+#    For more information: https://docs.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=applevel#generate-deployment-credentials
+#
+# 2. Create a secret in your repository named AZURE_WEBAPP_PUBLISH_PROFILE, paste the publish profile contents as the value of the secret.
+#    For instructions on obtaining the publish profile see: https://docs.microsoft.com/azure/app-service/deploy-github-actions#configure-the-github-secret
+#
+# 3. Change the value for the AZURE_WEBAPP_NAME. Optionally, change the AZURE_WEBAPP_PACKAGE_PATH and NODE_VERSION environment variables below.
+#
+# For more information on GitHub Actions for Azure: https://github.com/Azure/Actions
+# For more information on the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+env:
+  APPLICATION_NAME: 'nvue-app'
+  RESOURCE_GROUP_NAME: 'nvue'
+  RESOURCE_GROUP_LOCATION: 'eastus2'
+  NODE_VERSION: '18-lts'
+  DOTNET_VERSION: '8.0'
+
+
+jobs:
+  build-and-deploy:
+    name: 'build-and-deploy'
+    runs-on: ubuntu-latest
+    steps:
+
+    # Checkout the repo
+    - uses: actions/checkout@main
+
+    # Login to Azure
+    - name: "Azure Login"
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    # Create Azure Resource Group
+    # Will need to be manually created
+    # - uses: Azure/CLI@v1
+    #   with:
+    #     inlineScript: |
+    #       #!/bin/bash
+    #       az group create --name ${{ env.RESOURCE_GROUP_NAME }} --location ${{ env.RESOURCE_GROUP_LOCATION }}
+    #       echo "Azure resource group created"
+
+
+    ###
+    # Deploy Beta Resources
+    ###
+
+    # Deploy Azure Resource Manager Template - Hosting Plan
+    - name: "Deploy Hosting Plan"
+      uses: azure/arm-deploy@v1
+      with:
+        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+        template: ./hostingplan-arm-template.json
+        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta"
+
+    # Deploy Azure Resource Manager Template - BFF
+    - name: "Deploy BFF"
+      uses: azure/arm-deploy@v1
+      with:
+        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+        template: ./dotnetbff-arm-template.json
+        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DotNetVersion=${{ env.DOTNET_VERSION }}
+
+    # # Deploy Azure Resource Manager Template - NodeUI
+    # - name: "Deploy Node UI"
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+    #     template: ./nodeui-arm-template.json
+    #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" NodeVersion=${{ env.NODE_VERSION }} DotNetVersion=${{ env.DOTNET_VERSION }}
+
+    # Deploy Azure Resource Manager Template - SQLServer
+    - name: "Deploy SQL Server"
+      uses: azure/arm-deploy@v1
+      with:
+        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+        template: ./sqlserver-arm-template.json
+        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" ExternalIpAddress=${{ secrets.EXTERNALIPADDRESS }} SqlAdminPassword=${{ secrets.SQLADMINPASSWORD }}
+
+    # Deploy Azure Resource Manager Template - SQLDB
+    - name: "Deploy SQL DB"
+      uses: azure/arm-deploy@v1
+      with:
+        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+        template: ./sqldb-arm-template.json
+        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DBName=${{ env.APPLICATION_NAME }}-dev UseFreeDB=true
+
+    # Deploy Azure Resource Manager Template - Storage Account UI
+    # Need to manually setup Static website for storage account
+    - name: "Deploy Storage Account UI"
+      uses: azure/arm-deploy@v1
+      with:
+        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+        template: ./storageui-arm-template.json
+        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta"
+
+    ###
+    # Deploy Beta Resources
+    ###

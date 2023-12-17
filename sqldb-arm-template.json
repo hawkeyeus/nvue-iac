@@ -1,0 +1,83 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "AppName": {
+            "type": "string",
+            "defaultValue": "lni-app",
+            "metadata": {
+                "description": "Application Base Name for {app-name}-sqlserver"
+            }
+        },
+        "Environment": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Environment Name (Test, Beta, Prod(no value))"
+            }
+        },
+        "DBName": {
+            "type": "string",
+            "defaultValue": "[concat(parameters('AppName'), '-db')]",
+            "metadata": {
+                "description": "DB Name for {db-name}-db"
+            }
+        },
+        "UseFreeDB": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Use Azure Free SQL DB"
+            }
+        },
+        "ResourceTags": {
+            "type": "object",
+            "defaultValue": {
+                "AppName": "[parameters('AppName')]",
+                "Version":  "1.1.0.0",
+                "OS": "Linux",
+                "Cost": "$0.00 - F1",
+                "Template": "[toLower(format('{0}-template', parameters('AppName')))]",
+                "Resource": "SQL DB"
+            },
+            "metadata": {
+                "description": "Resource Tags to help tie resources together"
+            }
+        }
+    },
+    "variables": {
+        "sqlserver-name": "[toLower(format('{0}-sqlserver-{1}', parameters('AppName'), parameters('Environment')))]",
+        "sqldb-name": "[toLower(format('{0}-db-{1}', parameters('DBName'), parameters('Environment')))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Sql/servers/databases",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(variables('sqlserver-name'), '/', variables('sqldb-name'))]",
+            "location": "[resourcegroup().location]",
+            "tags": "[parameters('ResourceTags')]",
+            "sku": {
+                "name": "GP_S_Gen5",
+                "tier": "GeneralPurpose",
+                "family": "Gen5",
+                "capacity": 2
+            },
+            "kind": "v12.0,user,vcore,serverless,freelimit",
+            "properties": {
+                "collation": "SQL_Latin1_General_CP1_CI_AS",
+                "maxSizeBytes": 34359738368,
+                "catalogCollation": "SQL_Latin1_General_CP1_CI_AS",
+                "zoneRedundant": false,
+                "readScale": "Disabled",
+                "autoPauseDelay": 60,
+                "requestedBackupStorageRedundancy": "Local",
+                "minCapacity": 0.5,
+                "maintenanceConfigurationId": "/subscriptions/b3ccc837-c4b1-4eac-922c-8ce41146c4d3/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default",
+                "isLedgerOn": false,
+                "useFreeLimit": "[parameters('UseFreeDB')]",
+                "freeLimitExhaustionBehavior": "AutoPause",
+                "availabilityZone": "NoPreference"
+            }
+        }
+    ]
+}

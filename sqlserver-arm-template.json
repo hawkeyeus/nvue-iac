@@ -1,0 +1,112 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "AppName": {
+            "type": "string",
+            "defaultValue": "lni-app",
+            "metadata": {
+                "description": "Application Base Name for {app-name}-sqlserver"
+            }
+        },
+        "Environment": {
+            "type": "string",
+            "defaultValue": "",
+            "metadata": {
+                "description": "Environment Name (Test, Beta, Prod(no value))"
+            }
+        },
+        "ExternalIpAddress": {
+            "type": "string",
+            "metadata": {
+                "description": "Firewall entry for development external IP address"
+            }
+        },
+        "SqlAdminPassword": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Server Admin Password"
+            }
+        },
+        "ResourceTags": {
+            "type": "object",
+            "defaultValue": {
+                "AppName": "[parameters('AppName')]",
+                "Version":  "1.1.0.0",
+                "OS": "Linux",
+                "Cost": "$0.00 - F1",
+                "Template": "[toLower(format('{0}-template', parameters('AppName')))]",
+                "Resource": "SQL Server"
+            },
+            "metadata": {
+                "description": "Resource Tags to help tie resources together"
+            }
+        }
+    },
+    "variables": {
+        "sqlserver-name": "[toLower(format('{0}-sqlserver-{1}', parameters('AppName'), parameters('Environment')))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Sql/servers",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[variables('sqlserver-name')]",
+            "location": "[resourcegroup().location]",
+            "tags": "[parameters('ResourceTags')]",
+            "kind": "v12.0",
+            "properties": {
+                "administratorLogin": "lniquicksaledbadmin",
+                "administratorLoginPassword": "[parameters('SqlAdminPassword')]",
+                "version": "12.0",
+                "minimalTlsVersion": "1.2",
+                "publicNetworkAccess": "Enabled",
+                "administrators": {
+                    "administratorType": "ActiveDirectory",
+                    "principalType": "User",
+                    "login": "CAL015_outlook.com#EXT#@CAL015outlook.onmicrosoft.com",
+                    "sid": "b00b490e-d860-48b7-aaa7-664c78dbdbf5",
+                    "tenantId": "2d2b9dfc-2535-41cd-b799-6cfa9eb62763",
+                    "azureADOnlyAuthentication": false
+                },
+                "restrictOutboundNetworkAccess": "Disabled"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/administrators",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(variables('sqlserver-name'), '/ActiveDirectory')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', variables('sqlserver-name'))]"
+            ],
+            "properties": {
+                "administratorType": "ActiveDirectory",
+                "login": "CAL015_outlook.com#EXT#@CAL015outlook.onmicrosoft.com",
+                "sid": "b00b490e-d860-48b7-aaa7-664c78dbdbf5",
+                "tenantId": "2d2b9dfc-2535-41cd-b799-6cfa9eb62763"
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/azureADOnlyAuthentications",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(variables('sqlserver-name'), '/Default')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', variables('sqlserver-name'))]"
+            ],
+            "properties": {
+                "azureADOnlyAuthentication": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/firewallRules",
+            "apiVersion": "2023-02-01-preview",
+            "name": "[concat(variables('sqlserver-name'), '/ClientIp')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', variables('sqlserver-name'))]"
+            ],
+            "properties": {
+                "startIpAddress": "[parameters('ExternalIpAddress')]", // Starting IP address of the rule
+                "endIpAddress": "[parameters('ExternalIpAddress')]" // Ending IP address of the rule
+            }
+        }
+   ]
+}

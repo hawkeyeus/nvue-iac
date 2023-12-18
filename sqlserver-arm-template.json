@@ -63,9 +63,9 @@
                 "administrators": {
                     "administratorType": "ActiveDirectory",
                     "principalType": "User",
-                    "login": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.principalId]",
-                    "sid": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.tenantId]",
-                    "tenantId": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.tenantId]",
+                    "login": "chris-larson_outlook.com#EXT#@chrislarsonoutlook.onmicrosoft.com",
+                    "sid": "6f2b2d25-5b20-43d4-b432-fa1f99ce8aab",
+                    "tenantId": "3ebe5ffa-d53c-4ecc-97a2-f62326eee387",
                     "azureADOnlyAuthentication": false
                 },
                 "restrictOutboundNetworkAccess": "Disabled"
@@ -80,9 +80,9 @@
             ],
             "properties": {
                 "administratorType": "ActiveDirectory",
-                "login": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.principalId]",
-                "sid": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.tenantId]",
-                "tenantId": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.tenantId]"
+                "login": "chris-larson_outlook.com#EXT#@chrislarsonoutlook.onmicrosoft.com",
+                "sid": "6f2b2d25-5b20-43d4-b432-fa1f99ce8aab",
+                "tenantId": "3ebe5ffa-d53c-4ecc-97a2-f62326eee387"
             }
         },
         {

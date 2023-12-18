@@ -63,9 +63,9 @@
                 "administrators": {
                     "administratorType": "ActiveDirectory",
                     "principalType": "User",
-                    "login": "CAL015_outlook.com#EXT#@CAL015outlook.onmicrosoft.com",
-                    "sid": "b00b490e-d860-48b7-aaa7-664c78dbdbf5",
-                    "tenantId": "2d2b9dfc-2535-41cd-b799-6cfa9eb62763",
+                    "login": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.principalId]",
+                    "sid": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.tenantId]",
+                    "tenantId": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.tenantId]",
                     "azureADOnlyAuthentication": false
                 },
                 "restrictOutboundNetworkAccess": "Disabled"
@@ -80,9 +80,9 @@
             ],
             "properties": {
                 "administratorType": "ActiveDirectory",
-                "login": "CAL015_outlook.com#EXT#@CAL015outlook.onmicrosoft.com",
-                "sid": "b00b490e-d860-48b7-aaa7-664c78dbdbf5",
-                "tenantId": "2d2b9dfc-2535-41cd-b799-6cfa9eb62763"
+                "login": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.principalId]",
+                "sid": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.tenantId]",
+                "tenantId": "[reference(resourceId('Microsoft.Sql/servers', variables('sqlserver-name')), '2019-06-01-preview').identity.tenantId]"
             }
         },
         {

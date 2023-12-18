@@ -72,7 +72,7 @@
                 "autoPauseDelay": 60,
                 "requestedBackupStorageRedundancy": "Local",
                 "minCapacity": 0.5,
-                "maintenanceConfigurationId": "[format('/subscriptions/{0}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default', subscription().id)]",
+                "maintenanceConfigurationId": "[format('/subscriptions/{0}/providers/Microsoft.Maintenance/publicMaintenanceConfigurations/SQL_Default', subscription().subscriptionId)]",
                 "isLedgerOn": false,
                 "useFreeLimit": "[parameters('UseFreeDB')]",
                 "freeLimitExhaustionBehavior": "AutoPause",

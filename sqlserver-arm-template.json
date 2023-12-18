@@ -54,6 +54,9 @@
             "location": "[resourcegroup().location]",
             "tags": "[parameters('ResourceTags')]",
             "kind": "v12.0",
+            "identity": {
+                "type": "SystemAssigned"
+            },
             "properties": {
                 "administratorLogin": "lniquicksaledbadmin",
                 "administratorLoginPassword": "[parameters('SqlAdminPassword')]",
@@ -64,7 +67,7 @@
                     "administratorType": "ActiveDirectory",
                     "principalType": "User",
                     "login": "chris-larson_outlook.com#EXT#@chrislarsonoutlook.onmicrosoft.com",
-                    "sid": "6f2b2d25-5b20-43d4-b432-fa1f99ce8aab",
+                    "sid": "c1b04744-15b7-4e41-a99f-962fc06e1ab0",
                     "tenantId": "3ebe5ffa-d53c-4ecc-97a2-f62326eee387",
                     "azureADOnlyAuthentication": false
                 },
@@ -81,7 +84,7 @@
             "properties": {
                 "administratorType": "ActiveDirectory",
                 "login": "chris-larson_outlook.com#EXT#@chrislarsonoutlook.onmicrosoft.com",
-                "sid": "6f2b2d25-5b20-43d4-b432-fa1f99ce8aab",
+                "sid": "c1b04744-15b7-4e41-a99f-962fc06e1ab0",
                 "tenantId": "3ebe5ffa-d53c-4ecc-97a2-f62326eee387"
             }
         },
@@ -94,6 +97,18 @@
             ],
             "properties": {
                 "azureADOnlyAuthentication": false
+            }
+        },
+        {
+            "type": "Microsoft.Sql/servers/connectionPolicies",
+            "apiVersion": "2023-05-01-preview",
+            "name": "[concat(parameters('sqlserver-name'), '/default')]",
+            "location": "[resourcegroup().location]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Sql/servers', parameters('sqlserver-name'))]"
+            ],
+            "properties": {
+                "connectionType": "Default"
             }
         },
         {

@@ -102,10 +102,10 @@
         {
             "type": "Microsoft.Sql/servers/connectionPolicies",
             "apiVersion": "2023-05-01-preview",
-            "name": "[concat(parameters('sqlserver-name'), '/default')]",
+            "name": "[concat(variables('sqlserver-name'), '/default')]",
             "location": "[resourcegroup().location]",
             "dependsOn": [
-                "[resourceId('Microsoft.Sql/servers', parameters('sqlserver-name'))]"
+                "[resourceId('Microsoft.Sql/servers', variables('sqlserver-name'))]"
             ],
             "properties": {
                 "connectionType": "Default"

@@ -50,15 +50,20 @@ jobs:
 
     - name: Get Azure User Info
       run: |
-        USERNAME=$(az account show --query user.name -o tsv)
+        USER_PRINCIPAL_NAME=$(az ad signed-in-user show --query userPrincipalName -o tsv)
         OBJECT_ID=$(az ad signed-in-user show --query objectId -o tsv)
-        # TENANT_ID=$(az account show --query tenantId -o tsv)
-
-        # Output the information
-        echo "Azure User Info:"
-        echo "Username: $USERNAME"
-        echo "Object ID: $OBJECT_ID"
-        # echo "Tenant ID: $TENANT_ID"        
+        # USERNAME=$(az account show --query user.userPrincipalName -o tsv)
+        # OBJECT_ID=$(az ad signed-in-user show --query objectId -o tsv)
+        # # TENANT_ID=$(az account show --query tenantId -o tsv)
+        
+        echo "User Principal Name: $USER_PRINCIPAL_NAME"
+        echo "Object Id": $OBJECT_ID"
+# 
+        # # Output the information
+        # echo "Azure User Info:"
+        # echo "Username: $USERNAME"
+        # echo "Object ID: $OBJECT_ID"
+        # # echo "Tenant ID: $TENANT_ID"        
 
 
     # Create Azure Resource Group

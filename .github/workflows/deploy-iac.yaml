@@ -89,7 +89,7 @@ jobs:
       with:
         resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
         template: ./sqlserver-arm-template.json
-        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" ExternalIpAddress=${{ secrets.EXTERNALIPADDRESS }} SqlAdminPassword=${{ secrets.SQLADMINPASSWORD }} SqlAdminUserPrincipal=${{ secrets.SQL_ADMIN_USERPRINCIPAL }} SqlAdminUserObjectID=${{ secrets.SQL_ADMIN_USEROBJECTID }} SqlAdminUserTenantID=${{ secrets.SQL_ADMIN_USERTENANTID }}
+        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" ExternalIpAddress=${{ secrets.EXTERNALIPADDRESS }} SqlAdminUserPrincipal=${{ secrets.SQL_ADMIN_USERPRINCIPAL }} SqlAdminUserObjectID=${{ secrets.SQL_ADMIN_USEROBJECTID }} SqlAdminUserTenantID=${{ secrets.SQL_ADMIN_USERTENANTID }}
     
     # Deploy Azure Resource Manager Template - SQLDB
     - name: "Deploy SQL DB"

@@ -50,10 +50,9 @@ jobs:
 
     - name: Get Azure User Info
       run: |
-        # Get the currently logged-in user's information
         USERNAME=$(az account show --query user.name -o tsv)
-        OBJECT_ID=$(az ad signed-in-user show --query objectId -o tsv)
-        TENANT_ID=$(az account show --query tenantId -o tsv)
+        # OBJECT_ID=$(az ad signed-in-user show --query objectId -o tsv)
+        # TENANT_ID=$(az account show --query tenantId -o tsv)
 
         # Output the information
         echo "Azure User Info:"
@@ -132,6 +131,12 @@ jobs:
     #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
     #     template: ./storageui-arm-template.json
     #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta"
+
+
+    # Azure logout
+    - name: 'Logout'
+      run: |
+        az logout
 
     ###
     # Deploy Beta Resources

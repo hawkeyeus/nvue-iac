@@ -84,13 +84,13 @@ jobs:
         template: ./dotnetbff-arm-template.json
         parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DotNetVersion=${{ env.DOTNET_VERSION }}
 
-    # Deploy Azure Resource Manager Template - NodeUI
-    - name: "Deploy Node UI"
-      uses: azure/arm-deploy@v1
-      with:
-        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-        template: ./nodeui-arm-template.json
-        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" NodeVersion=${{ env.NODE_VERSION }} DotNetVersion=${{ env.DOTNET_VERSION }}
+    # # Deploy Azure Resource Manager Template - NodeUI
+    # - name: "Deploy Node UI"
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+    #     template: ./nodeui-arm-template.json
+    #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" NodeVersion=${{ env.NODE_VERSION }} DotNetVersion=${{ env.DOTNET_VERSION }}
     
     # Deploy Azure Resource Manager Template - SQLServer
     - name: "Deploy SQL Server"

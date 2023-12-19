@@ -25,7 +25,25 @@
         "SqlAdminPassword": {
             "type": "string",
             "metadata": {
-                "description": "SQL Server Admin Password"
+                "description": "SQL Server SA Admin Password"
+            }
+        },
+        "SqlAdminAccount": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Server Entra User"
+            }
+        },
+        "ObjectID": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Server Entra User Object ID"
+            }
+        },
+        "TenantID": {
+            "type": "string",
+            "metadata": {
+                "description": "SQL Server Entra Tenant ID"
             }
         },
         "ResourceTags": {
@@ -66,9 +84,9 @@
                 "administrators": {
                     "administratorType": "ActiveDirectory",
                     "principalType": "User",
-                    "login": "chris-larson_outlook.com#EXT#@chrislarsonoutlook.onmicrosoft.com",
-                    "sid": "c1b04744-15b7-4e41-a99f-962fc06e1ab0",
-                    "tenantId": "3ebe5ffa-d53c-4ecc-97a2-f62326eee387",
+                    "login": "[parameters('SqlAdminAccount')]",
+                    "sid": "[parameters('ObjectID')]",
+                    "tenantId": "[parameters('TenantID')]",
                     "azureADOnlyAuthentication": false
                 },
                 "restrictOutboundNetworkAccess": "Disabled"
@@ -83,9 +101,9 @@
             ],
             "properties": {
                 "administratorType": "ActiveDirectory",
-                "login": "chris-larson_outlook.com#EXT#@chrislarsonoutlook.onmicrosoft.com",
-                "sid": "c1b04744-15b7-4e41-a99f-962fc06e1ab0",
-                "tenantId": "3ebe5ffa-d53c-4ecc-97a2-f62326eee387"
+                "login": "[parameters('SqlAdminAccount')]",
+                "sid": "[parameters('ObjectID')]",
+                "tenantId": "[parameters('TenantID')]"
             }
         },
         {

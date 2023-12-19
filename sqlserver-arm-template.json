@@ -79,7 +79,7 @@
                     "login": "[parameters('SqlAdminUserPrincipal')]",
                     "sid": "[parameters('SqlAdminUserObjectID')]",
                     "SqlAdminUserTenantID": "[parameters('SqlAdminUserTenantID')]",
-                    "azureADOnlyAuthentication": false
+                    "azureADOnlyAuthentication": true
                 },
                 "restrictOutboundNetworkAccess": "Disabled"
             }

@@ -50,13 +50,14 @@ jobs:
 
     - name: Get Azure User Info
       run: |
-        USER_PRINCIPAL_NAME=$(az account show --query user.userPrincipalName -o tsv)
-        OBJECT_ID=$(az account show --query user.objectId -o tsv)
+        USER_PRINCIPAL_NAME=$(az account show --query userPrincipalName -o tsv)
+        OBJECT_ID=$(az account show --query objectId -o tsv)
         
         echo "User Principal Name: $USER_PRINCIPAL_NAME"
         echo "Object Id: $OBJECT_ID"
-# 
-        # USERNAME=$(az account show --query user.userPrincipalName -o tsv)
+
+
+        # USERNAME=$(az account show --query userPrincipalName -o tsv)
         # OBJECT_ID=$(az ad signed-in-user show --query objectId -o tsv)
         # # TENANT_ID=$(az account show --query tenantId -o tsv)
 

@@ -45,29 +45,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-
-
-
-    - name: Get Azure User Info
-      run: |
-        USER_PRINCIPAL_NAME=$(az account show --query user.name -o tsv)
-        OBJECT_ID=$(az account show --query objectId -o tsv)
-        
-        echo "User Principal Name: $USER_PRINCIPAL_NAME"
-        echo "Object Id: $OBJECT_ID"
-
-
-        # USERNAME=$(az account show --query userPrincipalName -o tsv)
-        # OBJECT_ID=$(az ad signed-in-user show --query objectId -o tsv)
-        # # TENANT_ID=$(az account show --query tenantId -o tsv)
-
-        # # Output the information
-        # echo "Azure User Info:"
-        # echo "Username: $USERNAME"
-        # echo "Object ID: $OBJECT_ID"
-        # # echo "Tenant ID: $TENANT_ID"        
-
-
     # Create Azure Resource Group
     # Will need to be manually created
     # - uses: Azure/CLI@v1
@@ -105,30 +82,30 @@ jobs:
     #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
     #     template: ./nodeui-arm-template.json
     #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" NodeVersion=${{ env.NODE_VERSION }} DotNetVersion=${{ env.DOTNET_VERSION }}
-# 
-    # # Deploy Azure Resource Manager Template - SQLServer
-    # - name: "Deploy SQL Server"
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-    #     template: ./sqlserver-arm-template.json
-    #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" ExternalIpAddress=${{ secrets.EXTERNALIPADDRESS }} SqlAdminPassword=${{ secrets.SQLADMINPASSWORD }} SqlAdminAccount=chris-larson_outlook.com#EXT#@chrislarsonoutlook.onmicrosoft.com ObjectID=c1b04744-15b7-4e41-a99f-962fc06e1ab0 TenantID=3ebe5ffa-d53c-4ecc-97a2-f62326eee387
-# 
-    # # Deploy Azure Resource Manager Template - SQLDB
-    # - name: "Deploy SQL DB"
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-    #     template: ./sqldb-arm-template.json
-    #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DBName=${{ env.APPLICATION_NAME }} UseFreeDB=true
-# 
-    # # Deploy Azure Resource Manager Template - SQLDB
-    # - name: "Deploy SQL DB"
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-    #     template: ./sqldb-arm-template.json
-    #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DBName=${{ env.APPLICATION_NAME }}-hangfire UseFreeDB=false
+    
+    # Deploy Azure Resource Manager Template - SQLServer
+    - name: "Deploy SQL Server"
+      uses: azure/arm-deploy@v1
+      with:
+        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+        template: ./sqlserver-arm-template.json
+        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" ExternalIpAddress=${{ secrets.EXTERNALIPADDRESS }} SqlAdminPassword=${{ secrets.SQLADMINPASSWORD }} SqlAdminUserPrincipal=${{ secrets.SQL_ADMIN_USERPRINCIPAL }} SqlAdminUserObjectID=${{ secrets.SQL_ADMIN_USEROBJECTID }} SqlAdminUserTenantID=${{ secrets.SQL_ADMIN_USERTENANTID }}
+    
+    # Deploy Azure Resource Manager Template - SQLDB
+    - name: "Deploy SQL DB"
+      uses: azure/arm-deploy@v1
+      with:
+        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+        template: ./sqldb-arm-template.json
+        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DBName=${{ env.APPLICATION_NAME }} UseFreeDB=true
+    
+    # Deploy Azure Resource Manager Template - SQLDB
+    - name: "Deploy SQL DB"
+      uses: azure/arm-deploy@v1
+      with:
+        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+        template: ./sqldb-arm-template.json
+        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DBName=${{ env.APPLICATION_NAME }}-hangfire UseFreeDB=false
 # 
     # # Deploy Azure Resource Manager Template - Storage Account UI
     # # Need to manually setup Static website for storage account

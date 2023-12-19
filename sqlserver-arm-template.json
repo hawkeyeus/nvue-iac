@@ -22,25 +22,19 @@
                 "description": "Firewall entry for development external IP address"
             }
         },
-        "SqlAdminPassword": {
-            "type": "string",
-            "metadata": {
-                "description": "SQL Server SA Admin Password"
-            }
-        },
-        "SqlAdminAccount": {
+        "SqlAdminUserPrincipal": {
             "type": "string",
             "metadata": {
                 "description": "SQL Server Entra User"
             }
         },
-        "ObjectID": {
+        "SqlAdminUserObjectID": {
             "type": "string",
             "metadata": {
                 "description": "SQL Server Entra User Object ID"
             }
         },
-        "TenantID": {
+        "SqlAdminUserTenantID": {
             "type": "string",
             "metadata": {
                 "description": "SQL Server Entra Tenant ID"
@@ -76,17 +70,15 @@
                 "type": "SystemAssigned"
             },
             "properties": {
-                "administratorLogin": "lniquicksaledbadmin",
-                "administratorLoginPassword": "[parameters('SqlAdminPassword')]",
                 "version": "12.0",
                 "minimalTlsVersion": "1.2",
                 "publicNetworkAccess": "Enabled",
                 "administrators": {
                     "administratorType": "ActiveDirectory",
                     "principalType": "User",
-                    "login": "[parameters('SqlAdminAccount')]",
-                    "sid": "[parameters('ObjectID')]",
-                    "tenantId": "[parameters('TenantID')]",
+                    "login": "[parameters('SqlAdminUserPrincipal')]",
+                    "sid": "[parameters('SqlAdminUserObjectID')]",
+                    "SqlAdminUserTenantID": "[parameters('SqlAdminUserTenantID')]",
                     "azureADOnlyAuthentication": false
                 },
                 "restrictOutboundNetworkAccess": "Disabled"
@@ -101,9 +93,9 @@
             ],
             "properties": {
                 "administratorType": "ActiveDirectory",
-                "login": "[parameters('SqlAdminAccount')]",
-                "sid": "[parameters('ObjectID')]",
-                "tenantId": "[parameters('TenantID')]"
+                "login": "[parameters('SqlAdminUserPrincipal')]",
+                "sid": "[parameters('SqlAdminUserObjectID')]",
+                "SqlAdminUserTenantID": "[parameters('SqlAdminUserTenantID')]"
             }
         },
         {
@@ -114,7 +106,7 @@
                 "[resourceId('Microsoft.Sql/servers', variables('sqlserver-name'))]"
             ],
             "properties": {
-                "azureADOnlyAuthentication": false
+                "azureADOnlyAuthentication": true
             }
         },
         {

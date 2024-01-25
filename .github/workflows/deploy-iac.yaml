@@ -68,37 +68,37 @@ jobs:
     # Deploy Beta Resources
     ###
 
-    # Deploy Azure Resource Manager Template - Hosting Plan
-    - name: "Deploy Hosting Plan"
-      uses: azure/arm-deploy@v1
-      with:
-        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-        template: ./hostingplan-arm-template.json
-        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta"
-
-    # Deploy Azure Resource Manager Template - BFF
-    - name: "Deploy BFF"
-      uses: azure/arm-deploy@v1
-      with:
-        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-        template: ./dotnetbff-arm-template.json
-        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DotNetVersion=${{ env.DOTNET_VERSION }}
-
-    # # Deploy Azure Resource Manager Template - NodeUI
-    # - name: "Deploy Node UI"
+    # # Deploy Azure Resource Manager Template - Hosting Plan
+    # - name: "Deploy Hosting Plan"
     #   uses: azure/arm-deploy@v1
     #   with:
     #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-    #     template: ./nodeui-arm-template.json
-    #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" NodeVersion=${{ env.NODE_VERSION }} DotNetVersion=${{ env.DOTNET_VERSION }}
+    #     template: ./hostingplan-arm-template.json
+    #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta"
+
+    # # Deploy Azure Resource Manager Template - BFF
+    # - name: "Deploy BFF"
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+    #     template: ./dotnetbff-arm-template.json
+    #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DotNetVersion=${{ env.DOTNET_VERSION }}
+
+    # # # Deploy Azure Resource Manager Template - NodeUI
+    # # - name: "Deploy Node UI"
+    # #   uses: azure/arm-deploy@v1
+    # #   with:
+    # #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+    # #     template: ./nodeui-arm-template.json
+    # #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" NodeVersion=${{ env.NODE_VERSION }} DotNetVersion=${{ env.DOTNET_VERSION }}
     
-    # Deploy Azure Resource Manager Template - SQLServer
-    - name: "Deploy SQL Server"
-      uses: azure/arm-deploy@v1
-      with:
-        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-        template: ./sqlserver-arm-template.json
-        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" ExternalIpAddress=${{ secrets.SQL_EXTERNALIPADDRESS }} SqlAdminUserPrincipal=${{ secrets.SQL_ADMIN_USERPRINCIPAL }} SqlAdminUserObjectID=${{ secrets.SQL_ADMIN_USEROBJECTID }} SqlAdminUserTenantID=${{ secrets.SQL_ADMIN_USERTENANTID }}
+    # # Deploy Azure Resource Manager Template - SQLServer
+    # - name: "Deploy SQL Server"
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+    #     template: ./sqlserver-arm-template.json
+    #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" ExternalIpAddress=${{ secrets.SQL_EXTERNALIPADDRESS }} SqlAdminUserPrincipal=${{ secrets.SQL_ADMIN_USERPRINCIPAL }} SqlAdminUserObjectID=${{ secrets.SQL_ADMIN_USEROBJECTID }} SqlAdminUserTenantID=${{ secrets.SQL_ADMIN_USERTENANTID }}
     
     # Deploy Azure Resource Manager Template - SQLDB
     - name: "Deploy SQL DB"
@@ -108,22 +108,22 @@ jobs:
         template: ./sqldb-arm-template.json
         parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DBName=${{ env.APPLICATION_NAME }} UseFreeDB=true
     
-    # Deploy Azure Resource Manager Template - SQLDB
-    - name: "Deploy SQL DB"
-      uses: azure/arm-deploy@v1
-      with:
-        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-        template: ./sqldb-arm-template.json
-        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DBName=${{ env.APPLICATION_NAME }}-hangfire UseFreeDB=false
+    # # Deploy Azure Resource Manager Template - SQLDB
+    # - name: "Deploy SQL DB"
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+    #     template: ./sqldb-arm-template.json
+    #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta" DBName=${{ env.APPLICATION_NAME }}-hangfire UseFreeDB=false
 
-    # Deploy Azure Resource Manager Template - Storage Account UI
-    # Need to manually setup Static website for storage account
-    - name: "Deploy Storage Account UI"
-      uses: azure/arm-deploy@v1
-      with:
-        resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
-        template: ./storageui-arm-template.json
-        parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta"
+    # # Deploy Azure Resource Manager Template - Storage Account UI
+    # # Need to manually setup Static website for storage account
+    # - name: "Deploy Storage Account UI"
+    #   uses: azure/arm-deploy@v1
+    #   with:
+    #     resourceGroupName: ${{ env.RESOURCE_GROUP_NAME }}
+    #     template: ./storageui-arm-template.json
+    #     parameters: AppName=${{ env.APPLICATION_NAME }} Environment="beta"
 
     # Azure logout
     - name: 'Logout'
